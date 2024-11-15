@@ -1,1 +1,2 @@
 # algorithm_Zuochengyun
+这个项目用来记录学数据结构与算法的一些笔记
