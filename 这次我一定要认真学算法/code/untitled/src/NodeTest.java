@@ -41,12 +41,103 @@ public class NodeTest {
         //6. 复制含有随机指针节点的链表
         //懒得验证了直接...
 
-        //7. 两个单链表相交的一系列问题
+        //7. 两个单链表相交的一系列问题，要求找到相交的节点，若无，则返回null
         //分情况讨论
 
 
 
     }
+    public static Node intersect(Node head1, Node head2) {
+        //分两类情况讨论就行
+        // 第一种情况: 两个链表都无环，那么就可以按照打印两个链表的公共部分一样，找到相交的那个节点
+        //第二种情况: 两个链表都有环，则要么不想交，要么两个链表共用一个入环口，要么有两个入环口
+        Node res = null;
+        //所以我们首先是要判断链表是否有环，并且找到入环口
+        Node loop1 = checkToroidal(head1);//找到链表1的入环口
+        Node loop2 = checkToroidal(head1);//找到链表2的入环口
+
+        if (loop1 == null && loop2 == null) {
+            //如果两个链表都没有环，则利用前面写的一个打印相同链表部分方法，来找相交点
+            res = findIntersect(head1, head2);
+        } else if ((loop1 == null && loop2 != null) || (loop1 != null && loop2 == null)) {
+            res = null;//不可能存在一个有环，一个无环但是相交
+        } else {
+            //如果两个都有环，那么分两种情况
+            if (loop1 == loop2) {
+                res = loop1;
+            } else {
+                Node tmp = loop1.next;
+                while (tmp != loop1) {
+                    if (tmp == loop2) {
+                        return tmp;
+                    }
+                    tmp = tmp.next;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    public static Node findIntersect(Node n1, Node n2) {
+        //2. 第二种思路，用两个指针，和一个计数器
+        Node p1 = n1;
+        Node p2 = n2;
+        int count = 0;
+        while (p1 != null) {
+            count ++;
+            p1 = p1.next;
+        }
+        p1 = n2;
+        while (p2 != null) {
+            count --;
+            p2 = p2.next;
+        }
+        p1 = count < 0 ? n2 : n1;//如果count为负数，说明n2链表更长，p1指针指向n2
+        p2 = p1 == n1 ? n2 : n1;//如果p1指向n1，则p2指向n2，否则指向n1
+        count = count < 0 ? -count : count;//判断是否为负数，如果是则变为正数
+
+        while (count > 0) {
+            p1 = p1.next;
+        }
+
+        while (p1 != null && p2 != null) {
+            if (p1 == p2) {
+                return p1;//如果找到了相同的节点，就说明找到了相交的点，直接返回即可
+            }
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+
+        return null;
+    }
+    public static Node checkToroidal(Node head) {
+        //使用快慢指针方法
+        Node fast = head;
+        Node slow = head;
+
+        //如果链表为空或者只有一个节点则直接返回null 表示不是有环链表
+        if (head == null || head.next == null) {
+            return null;
+        }
+        while (fast.next != null && fast != slow) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        //如果fast直接跑到了链表结尾，则直接说明链表无环
+        if (fast == null) {
+            return null;
+        } else {
+            //快指针回到head的位置，并且速度和慢指针一样
+            fast = head;
+            while (fast != slow) {
+                fast = fast.next;
+                slow = slow.next;
+            }
+        }
+        return fast;
+    }
+
     public static RandNode copyLinklist1(RandNode head) {
         //第二种思路很巧妙，我们只需要把我们copy的节点放入到待拷贝的节点的后一个位置
         RandNode p = head;
