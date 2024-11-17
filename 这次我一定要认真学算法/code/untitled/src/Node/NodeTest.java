@@ -1,7 +1,6 @@
-import java.util.*;
+package Node;
 
-import static javafx.scene.input.KeyCode.H;
-import static javafx.scene.input.KeyCode.P;
+import java.util.*;
 
 public class NodeTest {
     public static void main(String[] args) {
@@ -54,7 +53,7 @@ public class NodeTest {
         Node res = null;
         //所以我们首先是要判断链表是否有环，并且找到入环口
         Node loop1 = checkToroidal(head1);//找到链表1的入环口
-        Node loop2 = checkToroidal(head1);//找到链表2的入环口
+        Node loop2 = checkToroidal(head2);//找到链表2的入环口
 
         if (loop1 == null && loop2 == null) {
             //如果两个链表都没有环，则利用前面写的一个打印相同链表部分方法，来找相交点
@@ -148,6 +147,7 @@ public class NodeTest {
             p.next = copyElement;
             copyElement.next = tmp;
             //注意此时我们并没有为rand附上值
+            p = tmp;
         }
 
         //将所有元素拷贝好之后，我们容易得出如下规律,拷贝的元素的rand指针指向的是元素rand指针指向节点的后一个节点
@@ -198,13 +198,13 @@ public class NodeTest {
         //其实要求变高了难度也没有提高多少，刚才我们用的是一个ArrayList来去存，但其实我们可以直接用节点来串起来
         //分别定义三组头尾节点，更小的，相等的，更大的，但是要判断边界条件，即某一组不存在的情况
         Node smalleRear = new Node<>(0,null);
-        Node smallerHead = new Node<>(0,smalleRear);
+        Node smallerHead = new Node<Integer>(0,smalleRear);
 
         Node biggerRear = new Node<>(0,null);
-        Node biggerHead = new Node<>(0,biggerRear);
+        Node biggerHead = new Node<Integer>(0, biggerRear);
 
         Node equalRear = new Node<>(0,null);
-        Node equalHead = new Node<>(0,equalRear);
+        Node equalHead = new Node<Integer>(0, equalRear);
 
 
         Node tmpSmaller = smallerHead;
@@ -450,10 +450,10 @@ public class NodeTest {
     //建立单链表
     public static Node bulidLinklist() {
         Node<Integer> n1 = new Node<>(8,null);
-        Node<Integer> n2 = new Node<>(4,n1);
-        Node<Integer> n3 = new Node<>(3,n2);
-        Node<Integer> n4 = new Node<>(9,n3);
-        Node<Integer> n5 = new Node<>(6,n4);
+        Node<Integer> n2 = new Node<Integer>(4,n1);
+        Node<Integer> n3 = new Node<Integer>(3,n2);
+        Node<Integer> n4 = new Node<Integer>(9,n3);
+        Node<Integer> n5 = new Node<Integer>(6,n4);
 
         return n5;
     }
@@ -470,13 +470,13 @@ public class NodeTest {
     //建立双链表
     public static DoubleNode buildDoubleLinklist() {
         DoubleNode<Integer> n1 = new DoubleNode<>(1,null,null);
-        DoubleNode<Integer> n2 = new DoubleNode<>(2,n1,null);
+        DoubleNode<Integer> n2 = new DoubleNode<Integer>(2, n1,null);
         n1.next = n2;
-        DoubleNode<Integer> n3 = new DoubleNode<>(3,n2,null);
+        DoubleNode<Integer> n3 = new DoubleNode<Integer>(3, n2,null);
         n2.next = n3;
-        DoubleNode<Integer> n4 = new DoubleNode<>(4,n3,null);
+        DoubleNode<Integer> n4 = new DoubleNode<Integer>(4,n3,null);
         n3.next = n4;
-        DoubleNode<Integer> n5 = new DoubleNode<>(5,n4,null);
+        DoubleNode<Integer> n5 = new DoubleNode<Integer>(5,n4,null);
         n4.next = n5;
         return n1;
     }
@@ -490,7 +490,7 @@ public class NodeTest {
     }
 }
 
-class Node<V extends Comparable<V>> {//单链表
+ class Node<V extends Comparable<V>> {//单链表
     V value;
     Node next;
 
