@@ -7,47 +7,136 @@ import java.util.Stack;
 
 public class TreeTest {
     public static void main(String[] args) {
-        Node tree1 = initTree();
-        preOrder(tree1);
-        System.out.println();
-        inOrder(tree1);
-        System.out.println();
-        postOrder(tree1);
-        System.out.println();
+//        Node tree1 = initTree();
+//        preOrder(tree1);
+//        System.out.println();
+//        inOrder(tree1);
+//        System.out.println();
+//        postOrder(tree1);
+//        System.out.println();
 
 
         System.out.println("===================");
         Integer[] pre = {1, 2, 4, 5, 3, 6};
         Integer[] in = {4, 2, 5, 1, 6, 3};
         Integer[] post = {4, 5, 2, 6, 3, 1};
-//        Integer[] copy = Arrays.copyOfRange(pre,0, 0);
 
         Node tree2 = buildTreeByPreAndIn(pre, in);
-        preOrder(tree2);
-        System.out.println();
-        System.out.println("===================");
 
-        Node tree3 = buildTreeByInAndPost(in, post);
-        preOrder(tree3);
-        System.out.println();
-        System.out.println("===================");
+        Integer[] pre1 = {7, 4, 3, 5, 9, 8, 11};
+        Integer[] in1 = {3, 4, 5, 7, 8, 9, 11};
 
-        preOrder1(tree2);
+        Node tree3 = buildTreeByPreAndIn(pre1, in1);
+//        preOrder(tree3);
+//        System.out.println();
+//        System.out.println("===================");
+//
+//        Node tree3 = buildTreeByInAndPost(in, post);
+//        preOrder(tree3);
+//        System.out.println();
+//        System.out.println("===================");
 
+//        preOrder1(tree2);
+//        System.out.println();
+//        inOreder1(tree2);
+//        System.out.println();
+//        postOrder1(tree2);
+
+        //判断一棵二叉树是否是搜索二叉树
+        System.out.println(checkSearchBinTree(tree2));
+        System.out.println(checkSearchBinTree(tree3));
+    }
+    public static Boolean checkSearchBinTree(Node root) {
+        //搜索二叉树即，左子树的节点最大值要小于当前的节点，右子树的最小值要大于当前节点。
+        if (root == null) {
+            return true;
+        }
+        // 只有左子树和右子树同时都成立才为true，否则就是false
+        if (checkSearchBinTree(root.left) && checkSearchBinTree(root.right)) {
+            //除了左子树和右子树都要为真
+            if (root.value > getMax(root.left) && root.value < getMin(root.right)) {
+                return true;
+            }
+        }
+     return false;
+    }
+
+    private static int getMin(Node root) {
+        if (root == null) {
+            return Integer.MAX_VALUE;
+        }
+
+        int res = root.value;
+        int leftMin = getMin(root.left);
+        int rightMin = getMin(root.right);
+
+        res = res < leftMin ? res : leftMin;
+        res = res < leftMin ? res : leftMin;
+
+        return res;
+    }
+
+    public static int getMax(Node root) {
+        //获取这棵树的最大值
+        if (root == null) {
+            return Integer.MIN_VALUE;
+        }
+
+        int res = root.value;
+        int leftMax = getMax(root.left);
+        int rightMax = getMax(root.right);
+        res = res > leftMax ? res : leftMax;
+        res = res > rightMax ? res : rightMax;
+        return res;
     }
 
 
+
     // 2. 非递归的方法的先序遍历，中序遍历，后序遍历
+    public static void postOrder1(Node root) {
+        if (root == null) {
+            return;
+        }
+        //后序的非递归遍历要用两个栈
+        Stack<Node> stack1 = new Stack<>();
+        Stack<Node> stack2 = new Stack<>();
+        stack1.push(root);
+
+        while (!stack1.isEmpty()) {
+            Node cur = stack1.pop();
+            stack2.push(cur);
+
+            if (cur.left != null) {
+                stack1.push(cur.left);
+            }
+
+            if (cur.right != null) {
+                stack1.push(cur.right);
+            }
+        }
+
+        while (!stack2.isEmpty()) {
+            System.out.print(stack2.pop().value + " ");
+        }
+
+    }
     public static void inOreder1(Node root) {
         if (root == null) {
             return;
         }
         //没记错的话中序得要用栈
         Stack<Node> stack = new Stack<>();
-        stack.push(root);
-
-        while (!stack.isEmpty()) {
-
+        Node cur = root;
+        while (cur != null || !stack.isEmpty()) {
+            if (cur != null) {
+                //如果当前节点不为空，就拼命压栈
+                stack.push(cur);
+                cur = cur.left;
+            } else {
+                cur = stack.pop();
+                System.out.print(cur.value + " ");
+                cur = cur.right;
+            }
         }
     }
 
@@ -69,7 +158,6 @@ public class TreeTest {
             if (cur.right != null)
             queue.add(cur.right);
         }
-        System.out.println();
     }
 
     //1. 递归的先序遍历，中序遍历，后序遍历
@@ -174,7 +262,7 @@ public class TreeTest {
     }
 }
 
-class Node<Integer> {
+class Node {
     Integer value;
     Node left;
     Node right;
