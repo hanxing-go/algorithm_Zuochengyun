@@ -146,7 +146,59 @@ public class GraphTest {
         }
         return res;
     }
+
+    public static HashMap<Node, Integer> dijkstral(Node head) {
+
+        HashMap<Node, Integer> distanceMap = new HashMap<>();
+        //从head出发到所有点的最小距离
+        //key : 从head出发到达key
+        //value: 从head出发到达key的最小距离
+        //如果在表中，没有T的记录，含义是从head出发到T这个点的距离为正无穷
+
+        distanceMap.put(head, 0);
+        //已经求过距离的节点，存放在selectedNodes中，以后再也不碰
+        HashSet<Node> selectedNodes = new HashSet<>();
+        Node minNode = getMinDistanceAndUnselectedNode(distanceMap, selectedNodes);
+        while (minNode != null) {
+            int distance = distanceMap.get(minNode);//先获取从出发结点到当前结点的距离
+
+            for (Edge edge : minNode.edges) {
+                //将当前节点有的每一条边都扒出来
+                distance = distance + edge.weight;//计算出当前节点到每一个节点的距离
+                Node toNode = edge.to;//获取到达的每一个节点
+                if (distance < distanceMap.get(toNode) || !distanceMap.containsKey(toNode)) {
+                    distanceMap.put(toNode, distance);//将更小的距离或者没有出现过的节点更新进去
+                }
+            }
+
+            selectedNodes.add(minNode);
+            //遍历完每一条边之后，要把当前这个节点加到选择过的哈希表中，防止又被选到
+            minNode = getMinDistanceAndUnselectedNode(distanceMap, selectedNodes);
+            //再获取新的最小距离节点
+        }
+        return distanceMap;
+    }
+
+    private static Node getMinDistanceAndUnselectedNode(//返回最小距离的点，并且之前没有选择过的点
+            HashMap<Node, Integer> distanceMap,
+            HashSet<Node> selectedNodes) {
+        Node minNode = null;
+        int minDistance = Integer.MAX_VALUE;
+
+        for (Map.Entry<Node, Integer> nodeIntegerEntry : distanceMap.entrySet()) {
+            Node node = nodeIntegerEntry.getKey();
+            int distance = nodeIntegerEntry.getValue();
+            if (distance < minDistance && !selectedNodes.contains(node)) {
+                minDistance = distance;
+                minNode = node;
+            }
+        }
+
+        return minNode;
+    }
+
 }
+
 
 class Graph {
     public HashMap<Integer, Node> nodes;
