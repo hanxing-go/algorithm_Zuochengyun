@@ -106,7 +106,7 @@ public class AddBinary {
         }
 
         return result.reverse().toString();
-        
+
     }
 
     public static void main(String[] args) {
