@@ -1,6 +1,4 @@
-package offer.t4;
-
-import java.util.Map;
+package offer.chapter1.t4;
 
 public class SingleNumber {
     public int singleNumber_simple(int[] arr) {

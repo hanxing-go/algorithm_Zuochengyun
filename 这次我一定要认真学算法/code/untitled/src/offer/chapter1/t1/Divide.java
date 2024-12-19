@@ -1,4 +1,4 @@
-package offer.t1;
+package offer.chapter1.t1;
 
 public class Divide {
 

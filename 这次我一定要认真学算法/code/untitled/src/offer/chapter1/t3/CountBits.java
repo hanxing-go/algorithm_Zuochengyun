@@ -1,4 +1,4 @@
-package offer.t3;
+package offer.chapter1.t3;
 
 public class CountBits {
     public int[] countBits1(int num) {

@@ -1,4 +1,4 @@
-package offer.t6;
+package offer.chapter2.t6;
 
 public class TwoSum {
     public int[] twoSum(int[] numbers, int target) {

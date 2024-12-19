@@ -1,4 +1,4 @@
-package offer.t2;
+package offer.chapter1.t2;
 
 public class AddBinary {
     public String addBinary(String a, String b) {

@@ -1,4 +1,4 @@
-package offer.t7;
+package offer.chapter2.t7;
 
 import java.util.*;
 

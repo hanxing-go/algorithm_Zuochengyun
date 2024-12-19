@@ -1,4 +1,4 @@
-package offer.t8;
+package offer.chapter2.t8;
 
 public class MinSubArrayLen {
     public int minSubArrayLen_false(int k, int[] nums) {

@@ -1,4 +1,4 @@
-package offer.t5;
+package offer.chapter1.t5;
 
 public class MaxProduct {
     // 计算长度乘积
